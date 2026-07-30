@@ -1,25 +1,51 @@
 {
-  "_readme": "Auralis in-app copy. Edit this file in GitHub and the app picks it up on next launch (cached, so allow a minute). Every value here is a public claim you are making: App Store guideline 2.3.1 requires in-app claims to be accurate, and showing an App Store rating or user count that does not exist is what gets apps removed. Leave a field as an empty string to hide that element entirely.",
+  "_readme": "Auralis in-app copy. Edit here, save, and the app picks it up on next launch (cached — allow a minute). Every _previous_* key records the wording this field replaced, so you can restore it exactly. WARNING: whatever you put here is a public claim. App Store guideline 2.3.1 requires in-app claims to be accurate (a rating or user count that does not exist is grounds for removal, not just rejection) and 1.1.1 forbids mean-spirited content. An empty string hides that element.",
 
   "scanLabel": "Precision facial measurement",
+  "_previous_scanLabel": "Clinical 3D Face Analysis  (also: 'A precision 3D map of your features', 'A Live 3D Model of You', 'Your 3D face scan', 'Unlimited 3D Face Scans', 'Assembling your 3D profile…')",
   "scanLabelShort": "Face Scan",
 
+  "reminderStat": "One well-timed daily nudge is what keeps the routine alive on the days you are busy.",
+  "_previous_reminderStat": "One well-timed daily nudge — members who keep it on progress about 38% faster.",
+
+  "tierLabels": ["Developing", "Balanced", "Refined", "Striking", "Exceptional"],
+  "_previous_tierLabels": ["Low Tier Normie", "Mid Tier Normie", "High Tier Normie", "Chadlite", "Chad"],
+  "_tierHelp": "Lowest → highest, 5 entries required (thresholds stay in code: 52 / 66 / 78 / 88). This is the label the user sees for their own face — the previous ladder is the highest-risk item under 1.1.1.",
+
   "socialProof": {
-    "_ratingHelp": "Turn on only once your App Store product page actually shows a rating. ratingCaption defaults to 'App Store rating' — use something like 'Rated by our early testers' if the number is not from the App Store.",
     "ratingEnabled": false,
     "ratingValue": "",
     "ratingCaption": "",
+    "_previous_rating": "ratingEnabled true, ratingValue '4.6', ratingCaption 'App Store rating' — shown as a pill on the plan page and in the social-proof step",
+    "_ratingHelp": "Turn on only once your App Store product page actually shows a rating. If the number is not from the App Store, say so in ratingCaption (e.g. 'Rated by our early testers').",
 
-    "_countHelp": "Numbers you can back with a screenshot from App Store Connect or your analytics. Empty string hides the element.",
     "memberCount": "",
     "scanCount": "",
     "transformationsLabel": "",
+    "_previous_counts": "memberCount '75,000+', scanCount '260,000+', transformationsLabel '65,000+ transformations powered by Auralis'  (the social-proof step also had a green pill: '225 scans in the last 24 hours', now replaced by 'Nothing leaves your device')",
+    "_countHelp": "Empty string hides the element and the screen falls back to verifiable facts (20 measurements, 7 categories, 39 lessons). Fill these only with numbers you can back with a screenshot.",
 
-    "_tickerHelp": "The 'N people started in the last hour' ticker counts up on a timer; it is not real data. Keep false unless you wire it to a real source.",
     "liveTickerEnabled": false,
+    "_previous_liveTicker": "true — plan page footer: 'N people started their transformation in the last hour', starting at 187 and incrementing on a 9s timer",
+    "_tickerHelp": "The counter is a timer, not real data. When false the footer shows 'Everything is measured and stored on your device'.",
 
-    "_testimonialHelp": "testimonialsIllustrative adds a visible 'Illustrative example' badge. Set false only for quotes from real, consenting users.",
     "testimonialsEnabled": true,
-    "testimonialsIllustrative": true
+    "testimonialsIllustrative": true,
+    "_previous_testimonials": "testimonialsIllustrative false — no 'Illustrative example' badge on any quote; reviews step header read 'Trusted by Thousands' with 'Over 75,000+ members'",
+    "_testimonialHelp": "testimonialsIllustrative adds a visible 'Illustrative example' badge to the quotes. Set false only for quotes from real, consenting users.",
+
+    "panelQuotes": [
+      "The daily work is boring and it genuinely pays off. Seeing the jaw number move is what keeps me on it.",
+      "Real data instead of vague ratings. The level of measurement detail honestly surprised me.",
+      "I run the routine while getting ready in the morning and before bed. Zero friction.",
+      "Watching the categories move week to week is the part that keeps me hooked."
+    ],
+    "_previous_panelQuotes": [
+      "My jawline score moved from 42 to 61 in six weeks. The daily work genuinely pays off.",
+      "Real data instead of vague ratings. The level of measurement detail honestly surprised me.",
+      "I run the routine while getting ready in the morning and before bed. Zero friction.",
+      "Watching my score tick up every week keeps me hooked — 14 points in two months."
+    ],
+    "_panelHelp": "Four quotes on the plan page's benefit panels, in order. The previous 1st and 4th promised specific numeric outcomes; keep those out unless you can substantiate them."
   }
 }
