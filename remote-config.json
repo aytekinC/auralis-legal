@@ -1,14 +1,25 @@
 {
   "_readme": "Auralis in-app copy. Edit the live fields below, save, and the app picks them up on next launch (cached — allow a minute). _changelog records what each field said BEFORE and what it ships as NOW, so you can restore any of it exactly. Human-readable view: https://aytekinc.github.io/auralis-legal/config.html — WARNING: whatever you put here is a public claim. Guideline 2.3.1 requires in-app claims to be accurate (a rating or user count that does not exist is grounds for removal, not just rejection); 1.1.1 forbids mean-spirited content. An empty string hides that element.",
-
   "_changelog": [
     {
       "field": "tierLabels",
       "risk": "highest",
       "guideline": "1.1.1 mean-spirited content",
       "why": "The app labelled the user's own face. 'Low Tier Normie' on the results screen is the first thing a reviewer sees.",
-      "before": ["Low Tier Normie", "Mid Tier Normie", "High Tier Normie", "Chadlite", "Chad"],
-      "now": ["Developing", "Balanced", "Refined", "Striking", "Exceptional"],
+      "before": [
+        "Low Tier Normie",
+        "Mid Tier Normie",
+        "High Tier Normie",
+        "Chadlite",
+        "Chad"
+      ],
+      "now": [
+        "Developing",
+        "Balanced",
+        "Refined",
+        "Striking",
+        "Exceptional"
+      ],
       "note": "5 entries, lowest to highest. Thresholds stay in code: 52 / 66 / 78 / 88."
     },
     {
@@ -16,8 +27,16 @@
       "risk": "high",
       "guideline": "2.3.1 accurate metadata",
       "why": "The app is not published yet, so it has no App Store rating. Showing one is grounds for removal.",
-      "before": [true, "4.6", "App Store rating"],
-      "now": [false, "", ""],
+      "before": [
+        true,
+        "4.6",
+        "App Store rating"
+      ],
+      "now": [
+        false,
+        "",
+        ""
+      ],
       "note": "Turn on once your product page actually shows a rating. If the number is not from the App Store, say so in ratingCaption (e.g. 'Rated by our early testers')."
     },
     {
@@ -25,8 +44,16 @@
       "risk": "high",
       "guideline": "2.3.1 accurate metadata",
       "why": "Invented totals. Empty hides the elements and the screens fall back to verifiable facts (20 measurements, 7 categories, 39 lessons).",
-      "before": ["75,000+", "260,000+", "65,000+ transformations powered by Auralis"],
-      "now": ["", "", ""],
+      "before": [
+        "75,000+",
+        "260,000+",
+        "65,000+ transformations powered by Auralis"
+      ],
+      "now": [
+        "",
+        "",
+        ""
+      ],
       "note": "A green pill also read '225 scans in the last 24 hours'; it now reads 'Nothing leaves your device'."
     },
     {
@@ -80,17 +107,40 @@
       "risk": "medium",
       "guideline": "2.3.1 accurate metadata",
       "why": "The engine measures 2D facial landmarks; depth-dependent metrics are flagged 'estimated'. Calling it a 3D scan overstates it.",
-      "before": ["Clinical 3D Face Analysis", "Face Scan"],
-      "now": ["Precision facial measurement", "Face Scan"],
+      "before": [
+        "Clinical 3D Face Analysis",
+        "Face Scan"
+      ],
+      "now": [
+        "Precision facial measurement",
+        "Face Scan"
+      ],
       "note": "Related in-app strings changed with it: 'A precision 3D map of your features', 'A Live 3D Model of You', 'Your 3D face scan', 'Unlimited 3D Face Scans', 'Assembling your 3D profile…'."
+    },
+    {
+      "field": "paywall.hardGate",
+      "risk": "high",
+      "guideline": "2.1 app completeness",
+      "why": "The onboarding paywall has no close button. Hard gates are allowed, but if the store cannot sell (products not approved, sandbox hiccup, no network) the user - and an App Review tester - is trapped on a screen that cannot succeed. That is the most common paywall rejection. The app now opens the gate automatically in that case; this flag lets you soften it everywhere without a build if review pushes back.",
+      "before": "no flag - gate was unconditional",
+      "now": true,
+      "note": "true = hard gate (with the automatic escape when the store cannot sell). false = a close button and 'Continue without Pro' are always visible. escapeLabel sets the wording."
     }
   ],
-
   "scanLabel": "Precision facial measurement",
   "scanLabelShort": "Face Scan",
   "reminderStat": "One well-timed daily nudge is what keeps the routine alive on the days you are busy.",
-  "tierLabels": ["Developing", "Balanced", "Refined", "Striking", "Exceptional"],
-
+  "tierLabels": [
+    "Developing",
+    "Balanced",
+    "Refined",
+    "Striking",
+    "Exceptional"
+  ],
+  "paywall": {
+    "hardGate": true,
+    "escapeLabel": "Continue without Pro"
+  },
   "socialProof": {
     "ratingEnabled": false,
     "ratingValue": "",
