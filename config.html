@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auralis — Copy Config</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin:0 auto; max-width:1100px; padding:40px 20px 100px;
+         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         line-height:1.55; color:#e7eaf0; background:#06080d; }
+  h1 { font-size:1.7rem; margin:0 0 4px; }
+  .sub { color:#8b93a3; margin:0 0 28px; font-size:.95rem; }
+  .warn { border:1px solid #6b4a12; background:#1a1305; color:#f3d9a4;
+          padding:12px 14px; border-radius:10px; font-size:.88rem; margin-bottom:26px; }
+  .live { border:1px solid #1e2a3f; background:#0a0e16; border-radius:12px; padding:16px 18px; margin-bottom:32px; }
+  .live h2 { font-size:1rem; margin:0 0 10px; color:#9fb4d8; letter-spacing:.03em; text-transform:uppercase; }
+  .kv { display:grid; grid-template-columns:minmax(180px,240px) 1fr; gap:6px 16px; font-size:.9rem; }
+  .kv div:nth-child(odd) { color:#8b93a3; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.82rem; }
+  .off { color:#6b7280; font-style:italic; }
+  .on  { color:#7ee0a0; }
+  .card { border:1px solid #1e2a3f; background:#0a0e16; border-radius:12px; padding:16px 18px; margin-bottom:14px; }
+  .head { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .field { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.9rem; color:#cfe0ff; }
+  .pill { font-size:.7rem; padding:2px 8px; border-radius:999px; letter-spacing:.04em; text-transform:uppercase; }
+  .highest { background:#3b0f14; color:#ff9aa5; border:1px solid #6d1f28; }
+  .high    { background:#3a1c07; color:#ffc08a; border:1px solid #6d3a12; }
+  .medium  { background:#132a3f; color:#8fc7ff; border:1px solid #21456b; }
+  .gl { font-size:.75rem; color:#7b8494; }
+  .why { color:#b9c2d0; font-size:.9rem; margin:8px 0 12px; }
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:720px){ .cols{grid-template-columns:1fr} .kv{grid-template-columns:1fr} }
+  .col { border:1px solid #18202e; border-radius:10px; padding:10px 12px; background:#070a11; }
+  .col h3 { margin:0 0 8px; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:#8b93a3; }
+  .before h3 { color:#ff9aa5; }
+  .now h3 { color:#7ee0a0; }
+  .val { font-size:.86rem; white-space:pre-wrap; word-break:break-word; }
+  .val ul { margin:0; padding-left:18px; }
+  .val li { margin:3px 0; }
+  .note { font-size:.8rem; color:#7b8494; margin-top:10px; }
+  button { font:inherit; font-size:.78rem; padding:5px 10px; border-radius:8px; cursor:pointer;
+           background:#152238; color:#cfe0ff; border:1px solid #24365a; }
+  button:hover { background:#1b2c49; }
+  .active { border-color:#6d1f28; }
+  .active .field::after { content:" — currently reverted to BEFORE"; color:#ff9aa5; font-size:.75rem; }
+  a { color:#7fb2ff; }
+  footer { margin-top:30px; font-size:.82rem; color:#6b7280; }
+</style>
+</head>
+<body>
+<h1>Auralis — in-app copy</h1>
+<p class="sub">What every remote-config field said <strong>before</strong>, what it ships as <strong>now</strong>, and what is
+live in the app right now. Source of truth: <a href="remote-config.json">remote-config.json</a> — edit it on GitHub and the app
+picks it up on next launch.</p>
+
+<div class="warn">
+  Whatever you put in this file is a public claim the app makes to users. App Store guideline <strong>2.3.1</strong> requires
+  in-app claims to be accurate — a rating or user count that does not exist is grounds for <em>removal</em>, not just rejection.
+  Guideline <strong>1.1.1</strong> forbids mean-spirited content, which is why the score ladder no longer labels a user's face
+  "Low Tier Normie". Only fill in numbers you can back with a screenshot.
+</div>
+
+<div class="live">
+  <h2>Live values</h2>
+  <div class="kv" id="live"></div>
+</div>
+
+<div id="log"></div>
+<footer id="foot"></footer>
+
+<script>
+const esc = (s) => String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const show = (v) => {
+  if (Array.isArray(v)) return '<ul>' + v.map(x => '<li>' + fmt(x) + '</li>').join('') + '</ul>';
+  return fmt(v);
+};
+const fmt = (v) => {
+  if (v === '') return '<span class="off">(empty — element hidden)</span>';
+  if (v === true) return '<span class="on">on</span>';
+  if (v === false) return '<span class="off">off</span>';
+  return esc(v);
+};
+const eq = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+fetch('remote-config.json?t=' + Date.now()).then(r => r.json()).then(cfg => {
+  const sp = cfg.socialProof || {};
+  const rows = [
+    ['tierLabels', cfg.tierLabels],
+    ['scanLabel', cfg.scanLabel],
+    ['reminderStat', cfg.reminderStat],
+    ['socialProof.ratingEnabled', sp.ratingEnabled],
+    ['socialProof.ratingValue', sp.ratingValue],
+    ['socialProof.ratingCaption', sp.ratingCaption],
+    ['socialProof.memberCount', sp.memberCount],
+    ['socialProof.scanCount', sp.scanCount],
+    ['socialProof.transformationsLabel', sp.transformationsLabel],
+    ['socialProof.liveTickerEnabled', sp.liveTickerEnabled],
+    ['socialProof.testimonialsEnabled', sp.testimonialsEnabled],
+    ['socialProof.testimonialsIllustrative', sp.testimonialsIllustrative],
+  ];
+  document.getElementById('live').innerHTML =
+    rows.map(([k, v]) => '<div>' + esc(k) + '</div><div class="val">' + show(v) + '</div>').join('');
+
+  const liveOf = (field) => {
+    // map a changelog field label onto the live value(s) for comparison
+    const f = field.split('+')[0].trim();
+    const get = (path) => path.split('.').reduce((o, k) => (o == null ? o : o[k]), cfg);
+    if (field.includes('+')) return field.split('+').map(x => get(x.trim()));
+    return get(f);
+  };
+
+  document.getElementById('log').innerHTML = (cfg._changelog || []).map(e => {
+    const live = liveOf(e.field);
+    const reverted = eq(live, e.before);
+    return `
+      <div class="card ${reverted ? 'active' : ''}">
+        <div class="head">
+          <span class="field">${esc(e.field)}</span>
+          <span class="pill ${esc(e.risk)}">${esc(e.risk)} risk</span>
+          <span class="gl">${esc(e.guideline || '')}</span>
+          <button data-json='${esc(JSON.stringify(e.before))}'>Copy BEFORE value</button>
+        </div>
+        <div class="why">${esc(e.why)}</div>
+        <div class="cols">
+          <div class="col before"><h3>Before</h3><div class="val">${show(e.before)}</div></div>
+          <div class="col now"><h3>Ships as</h3><div class="val">${show(e.now)}</div></div>
+        </div>
+        ${e.note ? '<div class="note">' + esc(e.note) + '</div>' : ''}
+      </div>`;
+  }).join('');
+
+  document.querySelectorAll('button[data-json]').forEach(b => {
+    b.addEventListener('click', () => {
+      navigator.clipboard.writeText(b.getAttribute('data-json'));
+      const t = b.textContent; b.textContent = 'Copied'; setTimeout(() => (b.textContent = t), 1200);
+    });
+  });
+
+  document.getElementById('foot').textContent =
+    (cfg._changelog || []).length + ' tracked fields · a red border means that field is currently set back to its BEFORE value.';
+}).catch(e => {
+  document.getElementById('log').innerHTML =
+    '<div class="card">Could not load remote-config.json — ' + esc(e.message) + '</div>';
+});
+</script>
+</body>
+</html>
