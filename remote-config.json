@@ -124,7 +124,7 @@
       "why": "The onboarding paywall has no close button. Hard gates are allowed, but if the store cannot sell (products not approved, sandbox hiccup, no network) the user - and an App Review tester - is trapped on a screen that cannot succeed. That is the most common paywall rejection. The app now opens the gate automatically in that case; this flag lets you soften it everywhere without a build if review pushes back.",
       "before": "no flag - gate was unconditional",
       "now": true,
-      "note": "true = hard gate (with the automatic escape when the store cannot sell). false = a close button and 'Continue without Pro' are always visible. escapeLabel sets the wording."
+      "note": "TRUE  = hard paywall: no close button, no skip, the user must subscribe to enter the app. FALSE = normal paywall: close button and the escape action are always visible. The ONE exception to TRUE: if StoreKit has no purchasable product (products not approved yet, sandbox failure, no network) the close appears anyway, because otherwise the only button on the screen always fails and both your user and an App Review tester are trapped — that is the Guideline 2.1 rejection. Whenever the store can actually sell, TRUE means no way out. escapeLabel sets the wording of that action."
     }
   ],
   "scanLabel": "Precision facial measurement",
