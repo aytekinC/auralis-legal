@@ -1,0 +1,25 @@
+{
+  "_readme": "Auralis in-app copy. Edit this file in GitHub and the app picks it up on next launch (cached, so allow a minute). Every value here is a public claim you are making: App Store guideline 2.3.1 requires in-app claims to be accurate, and showing an App Store rating or user count that does not exist is what gets apps removed. Leave a field as an empty string to hide that element entirely.",
+
+  "scanLabel": "Precision facial measurement",
+  "scanLabelShort": "Face Scan",
+
+  "socialProof": {
+    "_ratingHelp": "Turn on only once your App Store product page actually shows a rating. ratingCaption defaults to 'App Store rating' — use something like 'Rated by our early testers' if the number is not from the App Store.",
+    "ratingEnabled": false,
+    "ratingValue": "",
+    "ratingCaption": "",
+
+    "_countHelp": "Numbers you can back with a screenshot from App Store Connect or your analytics. Empty string hides the element.",
+    "memberCount": "",
+    "scanCount": "",
+    "transformationsLabel": "",
+
+    "_tickerHelp": "The 'N people started in the last hour' ticker counts up on a timer; it is not real data. Keep false unless you wire it to a real source.",
+    "liveTickerEnabled": false,
+
+    "_testimonialHelp": "testimonialsIllustrative adds a visible 'Illustrative example' badge. Set false only for quotes from real, consenting users.",
+    "testimonialsEnabled": true,
+    "testimonialsIllustrative": true
+  }
+}
