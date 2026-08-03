@@ -10,6 +10,7 @@
   @media (prefers-color-scheme: dark) { body { color: #e5e5ea; background: #000000; } a { color: #60a5fa; } }
   h1 { font-size: 1.9rem; margin-bottom: 0.25rem; }
   h2 { font-size: 1.2rem; margin-top: 2.2rem; }
+  h3 { font-size: 1.02rem; margin-top: 1.4rem; margin-bottom: 0.2rem; }
   .meta { opacity: 0.6; font-size: 0.9rem; margin-bottom: 2rem; }
   a { color: #2563eb; }
   ul { padding-left: 1.2rem; }
@@ -18,7 +19,7 @@
 </head>
 <body>
 <h1>Privacy Policy</h1>
-<p class="meta">Auralis · Effective date: July 29, 2026</p>
+<p class="meta">Auralis · Effective date: August 3, 2026</p>
 
 <p>This Privacy Policy explains how the Auralis mobile application (the "App") handles your
 information. The App is designed around a simple principle:
@@ -42,38 +43,91 @@ information. The App is designed around a simple principle:
 </ul>
 <p>Because this data stays on your device, deleting the App — or using <em>Profile → Delete my data</em> inside the App — permanently removes it. We cannot recover it for you, because we never had it.</p>
 
-<h2>3. Information we do not collect</h2>
+<h2>3. Face data</h2>
+<p>This section describes specifically how the App collects, uses, discloses, shares, stores, retains
+and deletes face data.</p>
+
+<h3>3.1 What face data the App collects</h3>
+<ul>
+  <li><strong>Facial landmarks.</strong> When you run a scan, the App uses the front camera to detect facial contour points — the outlines of the eyes, eyebrows, nose, lips, and jawline — in the live camera frames.</li>
+  <li><strong>Facial measurements.</strong> From those landmarks the App computes approximately twenty numeric measurements (for example facial thirds, canthal tilt, jaw angle, interpupillary-scaled distances) and converts them into seven category scores and one overall score.</li>
+  <li><strong>Scan photos.</strong> A still photo of your face is captured during the guided scan so that the App can show you a before/after comparison of your own scans.</li>
+</ul>
+
+<h3>3.2 How face data is used</h3>
+<p>Face data is used for one purpose only: to compute and display <em>your own</em> cosmetic,
+informational facial measurements and scores to you inside the App, and to personalize the
+self-improvement routine the App suggests to you. Face data is <strong>not</strong> used to identify or
+authenticate you or anyone else, is <strong>not</strong> used to build a face template for recognition, is
+<strong>not</strong> matched against any database, and is <strong>not</strong> used for advertising, marketing,
+profiling, or any form of tracking.</p>
+
+<h3>3.3 Where face data is processed and stored</h3>
+<p>Face detection and all measurement calculations run <strong>entirely on your device</strong>, using
+machine-learning models bundled inside the App. No internet connection is used or required for a
+scan. Camera frames are analysed in memory and are never recorded. The detected landmark
+coordinates are discarded as soon as the measurements are computed and are never written to
+storage.</p>
+<p>Only two things persist, and both are stored exclusively in the App's private, sandboxed storage
+area on your device: (a) the computed numeric measurements and scores, and (b) your scan photos,
+which are written to the App's own Documents folder. Nothing is written to your photo library, to
+iCloud, or to any server. We operate no server that receives face data, and no copy of your face
+data exists anywhere outside your device.</p>
+
+<h3>3.4 Sharing and disclosure of face data</h3>
+<p>We do <strong>not</strong> share face data with any third party. Face data is never uploaded,
+transmitted, sold, rented, licensed, or disclosed — not to us, not to any service provider, not to
+any analytics or advertising provider, and not to any other third party. No third-party SDK included
+in the App receives face data; in particular, our subscription-management provider (RevenueCat)
+receives only anonymized transaction information such as a random app-instance identifier and App
+Store receipt data, and never receives face data, photos, or questionnaire answers. The only way
+face data leaves your device is if <em>you</em> deliberately choose to share a result image yourself
+through the system share sheet.</p>
+
+<h3>3.5 How long face data is retained</h3>
+<p>Face data is retained only on your device, and only for as long as it is useful to you. The App
+keeps a rolling history of your <strong>twelve most recent scans</strong> together with their scan
+photos; when a thirteenth scan is saved, the oldest scan and its photo are deleted automatically.
+Because no copy exists on any server, there is no retention period on our side — we retain nothing.</p>
+
+<h3>3.6 How to delete face data</h3>
+<p>You can erase all face data at any time using <em>Profile → Delete my data</em> inside the App,
+which permanently deletes both the stored measurements and every scan photo from your device.
+Deleting the App from your device also removes all of it. Once deleted, the data cannot be recovered
+by us, because we never received it.</p>
+
+<h2>4. Information we do not collect</h2>
 <ul>
   <li>We do not operate user accounts and do not collect identifiers such as your name, email, phone number, or precise location.</li>
   <li>We do not use third-party advertising or tracking SDKs.</li>
   <li>We do not create biometric templates for identification purposes. Facial measurements computed by the App are used solely to display cosmetic, informational scores to you on your device and are not used to identify you.</li>
 </ul>
 
-<h2>4. Purchases</h2>
+<h2>5. Purchases</h2>
 <p>Subscriptions are processed by Apple through your App Store account. We do not receive or store your payment card details. Apple's handling of your payment information is described in Apple's own privacy policy. If we use a purchase-management provider (such as RevenueCat) to validate subscriptions, that provider receives only anonymized transaction information (such as a random app-instance identifier and receipt data) — never your face data, photos, or questionnaire answers.</p>
 
-<h2>5. Notifications</h2>
+<h2>6. Notifications</h2>
 <p>If you enable reminders, the App schedules <em>local</em> notifications on your device (for example, a morning routine nudge). No push-notification service is used and no token is sent to a server. You can disable reminders at any time in the App or in your device settings.</p>
 
-<h2>6. Sharing initiated by you</h2>
+<h2>7. Sharing initiated by you</h2>
 <p>Some features let you actively share content — for example, sharing your FaceCard image or sending a challenge link that contains your scores. Sharing happens only when you choose it, through the apps you select (for example, your messaging app). Once you share content, its further distribution is governed by the receiving service.</p>
 
-<h2>7. Children</h2>
+<h2>8. Children</h2>
 <p>The App is not directed at children under 13, and you must be at least 13 years old to use it. We do not knowingly collect personal information from children — as described above, the App does not collect personal information from any user.</p>
 
-<h2>8. Data retention and deletion</h2>
-<p>All App data lives on your device. The App keeps a rolling history of your recent scans (up to 12) and recent scan photos on-device. You can erase everything at any time via <em>Profile → Delete my data</em>, or by deleting the App.</p>
+<h2>9. Data retention and deletion</h2>
+<p>All App data lives on your device. The App keeps a rolling history of your recent scans (up to 12) and recent scan photos on-device. You can erase everything at any time via <em>Profile → Delete my data</em>, or by deleting the App. Retention and deletion of face data specifically are described in sections 3.5 and 3.6.</p>
 
-<h2>9. Security</h2>
-<p>Your data is protected by your device's built-in security (such as device encryption and passcode/Face ID). Because no copy exists on our servers, the primary way to protect your data is to protect your device.</p>
+<h2>10. Security</h2>
+<p>Your data is protected by your device's built-in security (such as device encryption and passcode/Face ID), and by iOS application sandboxing, which prevents other apps from reading the App's stored scans and photos. Because no copy exists on our servers, the primary way to protect your data is to protect your device.</p>
 
-<h2>10. Your rights</h2>
+<h2>11. Your rights</h2>
 <p>Depending on where you live (for example, under the GDPR or the Turkish KVKK), you may have rights to access, correct, or delete personal data. Because the App stores all data locally on your device and we hold no copy, you can exercise these rights directly using the in-app deletion feature. For any privacy question or request, contact us at the address below.</p>
 
-<h2>11. Changes to this policy</h2>
+<h2>12. Changes to this policy</h2>
 <p>If we change how the App handles data — for example, by introducing an online feature — we will update this policy and change the effective date above before the change takes effect.</p>
 
-<h2>12. Contact</h2>
+<h2>13. Contact</h2>
 <p>Auralis — <a href="mailto:y41161714@gmail.com">y41161714@gmail.com</a></p>
 </body>
 </html>
