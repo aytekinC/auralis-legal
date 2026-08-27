@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Auralis — Face Scan Challenge</title>
+<meta name="description" content="A friend challenged you on Auralis. See their score and scan your own face across 20 measurements.">
+
+<!-- Static OG card: GitHub Pages cannot render per-payload metadata, so the
+     preview is generic and the page fills in the real score client-side. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Auralis">
+<meta property="og:title" content="You've been challenged on Auralis">
+<meta property="og:description" content="A friend scanned their face across 20 measurements. Think you can beat their score?">
+<meta property="og:url" content="https://aytekinc.github.io/auralis-legal/c/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="You've been challenged on Auralis">
+<meta name="twitter:description" content="A friend scanned their face across 20 measurements. Think you can beat their score?">
+<meta name="apple-itunes-app" content="app-id=6795979324">
+
+<style>
+  :root{
+    --bg:#000; --surface:#0d0d0f; --line:rgba(255,255,255,.10);
+    --fg:#fff; --muted:rgba(255,255,255,.56); --faint:rgba(255,255,255,.30);
+    --accent:#60a5fa; --accent-2:#3b82f6;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100svh; display:flex; align-items:center; justify-content:center;
+    padding:24px 20px calc(24px + env(safe-area-inset-bottom));
+    background-image:radial-gradient(120% 80% at 50% -10%,rgba(96,165,250,.16),transparent 60%);
+  }
+  .wrap{width:100%; max-width:420px}
+  .brand{
+    display:flex; align-items:center; gap:8px; justify-content:center;
+    font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--accent); font-weight:700; margin-bottom:18px;
+  }
+  .brand::before,.brand::after{content:"";height:1px;width:28px;background:var(--line)}
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:26px;
+    padding:26px 22px; text-align:center;
+  }
+  .kicker{font-size:13px; color:var(--muted); margin:0 0 4px}
+  .who{font-size:22px; font-weight:700; margin:0 0 20px; overflow-wrap:anywhere}
+  .score{font-size:68px; font-weight:800; line-height:1; letter-spacing:-.03em; margin:0}
+  .score span{font-size:22px; font-weight:600; color:var(--faint); letter-spacing:0}
+  .tier{
+    display:inline-block; margin-top:10px; padding:5px 14px; border-radius:999px;
+    background:rgba(96,165,250,.14); border:1px solid rgba(96,165,250,.28);
+    color:var(--accent); font-size:12px; font-weight:600;
+  }
+  .cats{margin-top:24px; display:flex; flex-direction:column; gap:11px; text-align:left}
+  .cat{display:grid; grid-template-columns:78px 1fr 30px; align-items:center; gap:10px}
+  .cat b{font-size:12px; font-weight:600; color:var(--muted)}
+  .cat i{font-size:12px; font-style:normal; color:var(--faint); text-align:right; font-variant-numeric:tabular-nums}
+  .bar{height:5px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden}
+  .bar>div{height:100%; border-radius:999px; width:0; transition:width .7s cubic-bezier(.22,1,.36,1)}
+  .cta{
+    display:block; width:100%; margin-top:26px; padding:17px 20px;
+    border:0; border-radius:16px; cursor:pointer;
+    background:linear-gradient(180deg,var(--accent),var(--accent-2));
+    color:#04122b; font-size:16px; font-weight:700;
+    font-family:inherit; text-decoration:none; text-align:center;
+  }
+  .cta:active{opacity:.85}
+  .note{margin:14px 0 0; font-size:12px; color:var(--faint); line-height:1.5}
+  .foot{margin:22px 0 0; text-align:center; font-size:11px; color:var(--faint)}
+  .foot a{color:var(--faint)}
+  @media (prefers-color-scheme:light){
+    :root{
+      --bg:#f5f5f7; --surface:#fff; --line:rgba(0,0,0,.09);
+      --fg:#111; --muted:rgba(0,0,0,.56); --faint:rgba(0,0,0,.36);
+    }
+    body{background-image:radial-gradient(120% 80% at 50% -10%,rgba(59,130,246,.12),transparent 60%)}
+    .bar{background:rgba(0,0,0,.07)}
+    .cta{color:#fff}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Auralis</div>
+
+  <div class="card">
+    <p class="kicker" id="kicker">You've been challenged</p>
+    <h1 class="who" id="who">A friend</h1>
+
+    <p class="score" id="score">—<span>/100</span></p>
+    <div class="tier" id="tier" hidden></div>
+
+    <div class="cats" id="cats"></div>
+
+    <a class="cta" id="cta" href="https://apps.apple.com/app/id6795979324">Scan my face — free</a>
+    <p class="note" id="note">Opens Auralis if you have it, otherwise the App Store.</p>
+  </div>
+
+  <p class="foot">
+    Auralis is a cosmetic and educational tool, not a medical device.<br>
+    <a href="../privacy.html">Privacy</a> &middot; <a href="../terms.html">Terms</a>
+  </p>
+</div>
+
+<script>
+(function () {
+  var APP_STORE = 'https://apps.apple.com/app/id6795979324';
+  var COLORS = {
+    Eyes:'#4fc3f7', Proportions:'#f2919e', Nose:'#e9b872', Lips:'#f272b6',
+    Jaw:'#b7a5e8', Cheekbones:'#c8e17e', Symmetry:'#7fd9d4'
+  };
+  var ORDER = ['Eyes','Proportions','Nose','Lips','Jaw','Cheekbones','Symmetry'];
+
+  function raw() {
+    var m = /[?&]d=([^&]*)/.exec(location.search);
+    return m ? m[1] : null;
+  }
+
+  function payload() {
+    var r = raw();
+    if (!r) return null;
+    try {
+      // The app encodes with encodeURIComponent over JSON; the browser has
+      // already undone one layer by the time we read location.search on some
+      // clients, so decode defensively.
+      var text = decodeURIComponent(r);
+      if (text.charAt(0) !== '{') text = decodeURIComponent(text);
+      var p = JSON.parse(text);
+      return (p && p.v === 1) ? p : null;
+    } catch (e) { return null; }
+  }
+
+  function clamp(n) {
+    n = Number(n);
+    return isFinite(n) ? Math.max(0, Math.min(100, Math.round(n))) : null;
+  }
+
+  var p = payload();
+
+  if (p) {
+    var name = String(p.n || 'A friend').slice(0, 24);
+    var overall = clamp(p.o);
+    document.getElementById('who').textContent = name;
+    if (overall !== null) {
+      document.getElementById('score').innerHTML = overall + '<span>/100</span>';
+    }
+    if (p.t) {
+      var tier = document.getElementById('tier');
+      tier.textContent = String(p.t).slice(0, 32);
+      tier.hidden = false;
+    }
+    document.title = name + ' scored ' + (overall === null ? '' : overall) + ' on Auralis';
+
+    var cats = document.getElementById('cats');
+    var rows = [];
+    ORDER.forEach(function (key) {
+      var v = clamp(p.c && p.c[key]);
+      if (v === null) return;
+      var row = document.createElement('div');
+      row.className = 'cat';
+      var b = document.createElement('b'); b.textContent = key;
+      var bar = document.createElement('div'); bar.className = 'bar';
+      var fill = document.createElement('div');
+      fill.style.background = COLORS[key] || '#60a5fa';
+      var val = document.createElement('i'); val.textContent = v;
+      bar.appendChild(fill);
+      row.appendChild(b); row.appendChild(bar); row.appendChild(val);
+      cats.appendChild(row);
+      rows.push([fill, v]);
+    });
+    // Paint after layout so the width transition actually runs.
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        rows.forEach(function (r) { r[0].style.width = r[1] + '%'; });
+      });
+    });
+
+    document.getElementById('cta').textContent = 'Beat ' + name + "'s score";
+  } else {
+    document.getElementById('kicker').textContent = 'Auralis';
+    document.getElementById('who').textContent = 'Face Scan Analysis';
+    document.getElementById('score').innerHTML = '20<span> metrics</span>';
+    document.getElementById('note').textContent =
+      'This challenge link is missing its data — the app still works.';
+  }
+
+  // The deep link is attempted only on tap. Firing it on load makes Safari
+  // throw "cannot open the page" for everyone who does not have the app —
+  // exactly the people this page exists to convert.
+  document.getElementById('cta').addEventListener('click', function (ev) {
+    var r = raw();
+    if (!r) return; // no payload: the href already points at the App Store
+
+    ev.preventDefault();
+    var returned = false;
+    function onHide() { returned = true; }
+    document.addEventListener('visibilitychange', onHide);
+    window.addEventListener('pagehide', onHide);
+
+    window.location.href = 'auralisapp://challenge?d=' + r;
+
+    // Still here after the handoff window => no app installed.
+    setTimeout(function () {
+      document.removeEventListener('visibilitychange', onHide);
+      window.removeEventListener('pagehide', onHide);
+      if (!returned && !document.hidden) window.location.href = APP_STORE;
+    }, 1200);
+  });
+})();
+</script>
+</body>
+</html>

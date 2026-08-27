@@ -125,6 +125,15 @@
       "before": "no flag - gate was unconditional",
       "now": true,
       "note": "TRUE  = hard paywall: no close button, no skip, the user must subscribe to enter the app. FALSE = normal paywall: close button and the escape action are always visible. The ONE exception to TRUE: if StoreKit has no purchasable product (products not approved yet, sandbox failure, no network) the close appears anyway, because otherwise the only button on the screen always fails and both your user and an App Review tester are trapped — that is the Guideline 2.1 rejection. Whenever the store can actually sell, TRUE means no way out. escapeLabel sets the wording of that action."
+    },
+    {
+      "field": "analytics.posthogKey",
+      "risk": "medium",
+      "guideline": "5.1.1 data collection and storage",
+      "why": "The app had no way to see its own funnel: events were written to AsyncStorage and never left the device, so install -> scan -> paywall -> purchase was invisible. The key lives here rather than in the build so it can be switched on without a new App Store review, and switched off the same way if anything goes wrong.",
+      "before": "",
+      "now": "",
+      "note": "Empty = off, which is the state the 1.0.1 build ships in. Turning it on is a two-step change: update App Privacy in App Store Connect FIRST, then paste the phc_ key here. The privacy policy already describes this feature (section 5)."
     }
   ],
   "scanLabel": "Precision facial measurement",
@@ -157,5 +166,10 @@
       "I run the routine while getting ready in the morning and before bed. Zero friction.",
       "Watching the categories move week to week is the part that keeps me hooked."
     ]
+  },
+  "analytics": {
+    "_help": "Anonymous product analytics. posthogKey EMPTY = telemetry completely off, nothing leaves the device. BEFORE putting a key here you MUST set App Store Connect -> App Privacy to 'Usage Data -> Product Interaction / Analytics, not linked to identity' — shipping telemetry under 'Data Not Collected' is a guideline 5.1.1 violation. Use the PROJECT api key (starts phc_), never a personal key. Host: https://eu.i.posthog.com or https://us.i.posthog.com — must match the region chosen when the PostHog project was created.",
+    "posthogKey": "",
+    "posthogHost": "https://eu.i.posthog.com"
   }
 }
