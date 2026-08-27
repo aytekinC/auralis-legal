@@ -61,6 +61,22 @@ picks it up on next launch.</p>
   "Low Tier Normie". Only fill in numbers you can back with a screenshot.
 </div>
 
+<div class="warn">
+  <strong>Turning analytics on — do these in order.</strong>
+  <span style="display:block;margin-top:.5rem">
+    1. App Store Connect &rarr; Auralis &rarr; <strong>App Privacy</strong> &rarr; Edit &rarr; tick
+    <em>Usage Data &rarr; Product Interaction</em>, mark it <em>not linked to identity</em> and
+    <em>not used for tracking</em> &rarr; Publish.<br>
+    2. Only then paste the PostHog <em>project</em> key (starts <code>phc_</code>) into
+    <code>analytics.posthogKey</code> in remote-config.json.
+  </span>
+  <span style="display:block;margin-top:.5rem">
+    Doing step 2 first ships telemetry under a "Data Not Collected" label, which is a guideline
+    <strong>5.1.1</strong> violation. Emptying the key switches everything off again — no app update needed.
+    Make sure <code>posthogHost</code> matches the region the PostHog project was created in.
+  </span>
+</div>
+
 <div class="live">
   <h2>Live values</h2>
   <div class="kv" id="live"></div>
@@ -98,6 +114,8 @@ fetch('remote-config.json?t=' + Date.now()).then(r => r.json()).then(cfg => {
     ['socialProof.liveTickerEnabled', sp.liveTickerEnabled],
     ['socialProof.testimonialsEnabled', sp.testimonialsEnabled],
     ['socialProof.testimonialsIllustrative', sp.testimonialsIllustrative],
+    ['analytics.posthogKey', (cfg.analytics || {}).posthogKey],
+    ['analytics.posthogHost', (cfg.analytics || {}).posthogHost],
   ];
   document.getElementById('live').innerHTML =
     rows.map(([k, v]) => '<div>' + esc(k) + '</div><div class="val">' + show(v) + '</div>').join('');
