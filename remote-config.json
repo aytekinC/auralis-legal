@@ -168,8 +168,8 @@
     ]
   },
   "analytics": {
-    "_help": "Anonymous product analytics. posthogKey EMPTY = telemetry completely off, nothing leaves the device. BEFORE putting a key here you MUST set App Store Connect -> App Privacy to 'Usage Data -> Product Interaction / Analytics, not linked to identity' — shipping telemetry under 'Data Not Collected' is a guideline 5.1.1 violation. Use the PROJECT api key (starts phc_), never a personal key. Host: https://eu.i.posthog.com or https://us.i.posthog.com — must match the region chosen when the PostHog project was created.",
+    "_help": "Anonymous product analytics. posthogKey EMPTY = telemetry completely off, nothing leaves the device. BEFORE putting a key here you MUST set App Store Connect -> App Privacy to 'Usage Data -> Product Interaction / Analytics, not linked to identity' — shipping telemetry under 'Data Not Collected' is a guideline 5.1.1 violation. Use the PROJECT api key (starts phc_), never a personal key. Host is set to US Cloud, which is where this project lives. A wrong region still returns 200 at the ingest endpoint and then silently drops every event, so do not change it without checking the PostHog URL.",
     "posthogKey": "",
-    "posthogHost": "https://eu.i.posthog.com"
+    "posthogHost": "https://us.i.posthog.com"
   }
 }
