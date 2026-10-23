@@ -8,7 +8,7 @@ of `trial` in auralis-legal/remote-config.json, which a GitHub Action applies.
 Usage:
   python3 asc_trial.py status
   python3 asc_trial.py apply --enabled false [--days 3] [--territory KNA] [--dry-run] [--force]
-  python3 asc_trial.py from-config remote-config.json [--dry-run] [--force]
+  python3 asc_trial.py from-config remote-config.json [--dry-run] [--force] [--pending-ok]
 
 Environment:
   ASC_KEY_ID, ASC_ISSUER_ID       App Store Connect API key
@@ -124,14 +124,20 @@ def status():
     return sub, offers
 
 
-def apply(enabled, days, only=None, dry=False, force=False):
+def apply(enabled, days, only=None, dry=False, force=False, pending_ok=False):
     if enabled and days not in DURATIONS:
         sys.exit(f"days must be one of {sorted(DURATIONS)}")
     if not enabled and not force:
         v = live_version()
         if v is None or older(v, FIRST_STORE_DRIVEN_VERSION):
-            sys.exit(f"Refusing to switch the trial OFF: the App Store serves {v or 'an unknown version'}, whose paywall "
-                     f"still says '3-Day Free Trial'. Release {FIRST_STORE_DRIVEN_VERSION}+ first, or pass --force.")
+            msg = (f"PENDING - trial stays ON for now: the App Store serves {v or 'an unknown version'}, whose paywall "
+                   f"still says '3-Day Free Trial'. It switches off automatically once {FIRST_STORE_DRIVEN_VERSION}+ is live.\n"
+                   f"BEKLIYOR - deneme simdilik ACIK: App Store'da {v or 'bilinmeyen surum'} yayinda. "
+                   f"{FIRST_STORE_DRIVEN_VERSION} yayina girince otomatik kapanacak.")
+            if pending_ok:
+                print(msg)
+                return 0
+            sys.exit(msg + " (or pass --force)")
     sub, offers = status()
     want = DURATIONS.get(days)
     targets = {only} if only else (sold_territories(sub) | set(offers))
@@ -183,6 +189,7 @@ def main():
     c.add_argument("path")
     c.add_argument("--dry-run", action="store_true")
     c.add_argument("--force", action="store_true")
+    c.add_argument("--pending-ok", action="store_true", help="a refused switch-off is reported, not a failure")
     args = ap.parse_args()
     if args.cmd == "status":
         status()
@@ -192,7 +199,7 @@ def main():
     trial = json.load(open(args.path)).get("trial")
     if not isinstance(trial, dict) or not isinstance(trial.get("enabled"), bool):
         sys.exit("remote-config.json has no valid trial.enabled - nothing to do")
-    return apply(trial["enabled"], int(trial.get("days", 3)), None, args.dry_run, args.force)
+    return apply(trial["enabled"], int(trial.get("days", 3)), None, args.dry_run, args.force, args.pending_ok)
 
 
 if __name__ == "__main__":
