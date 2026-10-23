@@ -160,6 +160,10 @@
     "minSupportedVersion": "",
     "message": ""
   },
+  "ads": {
+    "_help": "Meta (Facebook/Instagram) ad measurement, app 1.0.3+. metaEnabled: false = the Meta SDK is never started and nothing is sent to Meta, no app update needed. Face data, photos and scores are never sent either way. While a build with the SDK is live, App Store Connect -> App Privacy must keep declaring tracking.",
+    "metaEnabled": true
+  },
   "socialProof": {
     "ratingEnabled": false,
     "ratingValue": "",
