@@ -1,0 +1,35 @@
+name: Sync free trial
+
+# Applies `trial` from remote-config.json to App Store Connect (every
+# territory of auralis_pro_yearly). Runs on each commit that touches the file,
+# and can be re-run by hand from the Actions tab.
+on:
+  push:
+    branches: [main]
+    paths: [remote-config.json]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-trial
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pyjwt cryptography
+      - name: Apply trial setting
+        shell: bash
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+        run: python .github/scripts/asc_trial.py from-config remote-config.json | tee -a "$GITHUB_STEP_SUMMARY"

@@ -150,6 +150,16 @@
     "hardGate": true,
     "escapeLabel": "Continue without Pro"
   },
+  "trial": {
+    "_help": "Free trial on the YEARLY plan. Every commit to this file runs the 'Sync free trial' GitHub Action, which applies this to App Store Connect in all 175 territories (about a minute - check that the Actions tab shows a green tick). enabled: false removes the trial, true brings it back. days: 3, 7, 14 or 30. The paywall (app 1.0.2+) reads the trial from the App Store, so its wording follows on its own. Switching OFF is refused while the App Store still serves a version below 1.0.2, whose paywall hardcodes '3-Day Free Trial'. Trials already running are honoured by Apple.",
+    "enabled": true,
+    "days": 3
+  },
+  "update": {
+    "_help": "Forced update (app 1.0.2+). Builds below minSupportedVersion get a screen they cannot dismiss - but only once the App Store actually serves that version, so a typo can never lock anyone out. Empty = off. message: optional custom text; empty = the built-in English/Turkish text. Newer versions also get an optional, dismissible prompt automatically.",
+    "minSupportedVersion": "",
+    "message": ""
+  },
   "socialProof": {
     "ratingEnabled": false,
     "ratingValue": "",

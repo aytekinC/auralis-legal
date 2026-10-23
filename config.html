@@ -77,6 +77,16 @@ picks it up on next launch.</p>
   </span>
 </div>
 
+<div class="warn">
+  <strong>Free trial on / off.</strong>
+  <span style="display:block;margin-top:.5rem">
+    Edit <code>trial.enabled</code> (and optionally <code>trial.days</code>) in remote-config.json and commit.
+    The <em>Sync free trial</em> GitHub Action applies it to App Store Connect in every territory within about a
+    minute; a red run in the Actions tab means nothing changed. The app's paywall reads the trial from the store,
+    so no app update is needed. Switching off is refused until the App Store serves 1.0.2 or later.
+  </span>
+</div>
+
 <div class="live">
   <h2>Live values</h2>
   <div class="kv" id="live"></div>
@@ -116,6 +126,9 @@ fetch('remote-config.json?t=' + Date.now()).then(r => r.json()).then(cfg => {
     ['socialProof.testimonialsIllustrative', sp.testimonialsIllustrative],
     ['analytics.posthogKey', (cfg.analytics || {}).posthogKey],
     ['analytics.posthogHost', (cfg.analytics || {}).posthogHost],
+    ['trial.enabled', (cfg.trial || {}).enabled],
+    ['trial.days', (cfg.trial || {}).days],
+    ['update.minSupportedVersion', (cfg.update || {}).minSupportedVersion],
   ];
   document.getElementById('live').innerHTML =
     rows.map(([k, v]) => '<div>' + esc(k) + '</div><div class="val">' + show(v) + '</div>').join('');
